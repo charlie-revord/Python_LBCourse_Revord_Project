@@ -50,10 +50,13 @@ jobs_data.info()
 Looking at the Chicagoland job market, my analysis questions are as follows: 
 
 1. What are the Top 3 Data Roles posted within the Chicagoland area? For the Top 3 Data Roles, which companies routinely hire for these roles? 
-2. What skills are most prevalent 
+2. What skills are most frequently mentioned in job posts for the Top 3 Data Roles? 
+3. For the Top Role, how do top skills for this role trend over a year of job posts? 
+4. How robust is the salary information for Chicagoland jobs in the dataset, and what trends can be extrapolated from it? 
+5. Finally, for top role postings with salary information, which skills are most requested and which are most lucrative? Are there skills which balance high demand with good pay? 
 
 
-# 🏢 Filtering for Chicago "Windy City" Data
+# 🚖 Filtering for Chicago "Windy City" Data
 
 The following code snippet isolates job posts within the U.S. that contain the string (any case) 'Chicago' in the job location field:
 
@@ -64,3 +67,7 @@ chicago_roles_data = (
     (jobs_data['job_location'].str.lower().str.contains('chicago'))]
     )
 ```
+
+# Analysis
+
+The analysis of the Chicagoland dataset is split into sections for each question, respectively. The raw code can be referenced in the attached Jupyter Notebook called [data_workbook](data_workbook.ipynb). 
