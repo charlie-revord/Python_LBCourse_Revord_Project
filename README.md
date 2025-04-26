@@ -126,29 +126,6 @@ It's clear that my analysis should hone in on Data Analyst, Data Scientist, and 
 Because I work as a Data Analyst, I want to see how top skills for the role are trending over time in the Chicagoland area. For this investigation, I used a line plot with months on the x-axis; this allowed me to see the prevalence of job post mentions over time.
 
 ```python
-# How do Top Data Analyst Skills Trend Over the Year? 
-chicago_analyst_subset = chicago_roles_data[chicago_roles_data['job_title_short'] == 'Data Analyst'].copy()
-chicago_analyst_subset['posted_month'] = chicago_analyst_subset['job_posted_date'].dt.month
-
-chicago_analyst_skills = chicago_analyst_subset.explode('job_skills')
-chicago_analyst_monthly_skills = chicago_analyst_skills.pivot_table(index='posted_month', columns='job_skills',aggfunc='size', fill_value=0)
-
-# Identify top skills across all months and sort columns accordingly
-chicago_analyst_monthly_skills.loc['Total'] = chicago_analyst_monthly_skills.sum()
-chicago_analyst_monthly_skills = chicago_analyst_monthly_skills[chicago_analyst_monthly_skills.loc['Total'].sort_values(ascending=False).index]
-chicago_analyst_monthly_skills = chicago_analyst_monthly_skills.drop('Total')
-
-# Calculate Monthly Skill Mentions compared to Monthly Total
-chicago_analyst_monthly_skill_percents = chicago_analyst_monthly_skills.div(
-    chicago_analyst_monthly_skills.sum(axis=1), axis=0
-) * 100
-
-# Convert Months to Month Names
-chicago_analyst_monthly_skill_percents = chicago_analyst_monthly_skill_percents.reset_index()
-chicago_analyst_monthly_skill_percents['month_name'] = chicago_analyst_monthly_skill_percents['posted_month'].apply(lambda x: pd.to_datetime(x, format='%m').strftime('%b'))
-chicago_analyst_monthly_skill_percents = chicago_analyst_monthly_skill_percents.set_index('month_name')
-chicago_analyst_monthly_skill_percents = chicago_analyst_monthly_skill_percents.drop(columns='posted_month')
-
 # Visualize the Top 5 Skill Trends over Months
 chicago_skills_plot = chicago_analyst_monthly_skill_percents.iloc[:,0:5]
 sns.lineplot(chicago_skills_plot, legend=False, palette='tab10', dashes=False)
@@ -164,3 +141,12 @@ plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
 for i in range(5):
     plt.text(11.2, chicago_skills_plot.iloc[-1, i], chicago_skills_plot.columns[i], color='black')
 ```
+
+### Results & Takeaways
+![Top Data Analyst Skills Trend over Time](images/analyst_skills_trend.png)
+
+Month by month, two skills remain king for Data Analysts looking for work in the Chicagoland area: SQL and Excel. Programming and special technologies are secondary to essential query skills.
+
+## Part 3: Making Sense of Salary Information
+
+A caveat of my analysis is that I am working with a subset of Luke's webscraped data. As a result, I expect limited salary information at a regional level. That said, I want to make use of this data (with a few grains of salt)
