@@ -49,11 +49,10 @@ jobs_data.info()
 
 Looking at the Chicagoland job market, my analysis questions are as follows: 
 
-1. What are the Top 3 Data Roles posted within the Chicagoland area? For the Top 3 Data Roles, which companies routinely hire for these roles? 
-2. What skills are most frequently mentioned in job posts for the Top 3 Data Roles? 
-3. For the Top Role, how do top skills for this role trend over a year of job posts? 
-4. How robust is the salary information for Chicagoland jobs in the dataset, and what trends can be extrapolated from it? 
-5. Finally, for top role postings with salary information, which skills are most requested and which are most lucrative? Are there skills which balance high demand with good pay? 
+1. What are the Top 3 Data Roles posted within the Chicagoland area? For the Top 3 Data Roles, which companies routinely hire for these roles, and which skills are most frequently mentioned in job posts for the Top 3 Data Roles? 
+2. For the Top Role, how do top skills for this role trend over a year of job posts? 
+3. How robust is the salary information for Chicagoland jobs in the dataset, and what trends can be extrapolated from it? 
+4. Finally, for top role postings with salary information, which skills are most requested and which are most lucrative? Are there skills which balance high demand with good pay? 
 
 
 # 🚖 Filtering for Chicago "Windy City" Data
@@ -68,6 +67,100 @@ chicago_roles_data = (
     )
 ```
 
-# Analysis
+# 📈 Analysis
 
 The analysis of the Chicagoland dataset is split into sections for each question, respectively. The raw code can be referenced in the attached Jupyter Notebook called [data_workbook](data_workbook.ipynb). 
+
+## Part 1: Assessing Top Data Roles, Companies, and Skills
+
+After filtering for Chicago-based jobs, the dataset contains 5661 jobs. I want to know which roles, by job title, are most posted. Using some simple exploratory analysis functions, like value_counts(), I was able to identify the Top 3 Roles: Data Analyst (2457 posts), Data Scientist (1054 posts), and Data Engineer (737 posts). 
+
+Isolating for the Top 3 Roles in a new dataframe, I then identified the top 10 hiring organizations for these roles. The results were a mix of banks, construction firms, universities, and 3rd party recruiters. The code snippet for this investigation is accessible below:
+
+```python
+# What are the top 10 companies hiring for the top 3 role types?
+
+top_data_roles = ['Data Analyst', 'Data Scientist', 'Data Engineer']
+
+top_chicago_roles = chicago_roles_data[chicago_roles_data['job_title_short'].isin(top_data_roles)].copy()
+top_chicago_roles['company_name'].value_counts().head(10)
+```
+Finally, I visualized the top skills for the top 3 roles in three separate horizontal bar charts. This visual helped me assess which skills cut across the different roles. 
+
+```python
+# For the Top 3 Roles in Chicago, what are the top in-demand skills? 
+top_chicago_skills = top_chicago_roles.explode('job_skills')
+
+role_skill_counts = top_chicago_skills.groupby(['job_title_short', 'job_skills']).size().reset_index(name = 'count')
+role_skill_counts['total_roleskill_mentions'] = role_skill_counts.groupby('job_title_short')['count'].transform('sum')
+
+role_skill_counts['perc_mentions_byrole'] = (role_skill_counts['count'] / role_skill_counts['total_roleskill_mentions']) * 100
+
+fig, ax = plt.subplots(3,1)
+
+for i, value in enumerate(top_data_roles):
+    plot_role_skills = role_skill_counts[role_skill_counts['job_title_short'] == value].sort_values('perc_mentions_byrole', ascending= False).head()
+    sns.barplot(plot_role_skills, x = 'perc_mentions_byrole', y = 'job_skills', ax = ax[i], hue = 'count', palette= 'dark:blue')
+    fig.suptitle('Likelihood of Skills Requested for Top Chicago Data Roles', fontsize=14)
+    ax[i].set_xlabel('')
+    ax[i].set_ylabel('')
+    ax[i].set_title(f'{value}')
+    ax[i].get_legend().remove()
+    ax[i].set_xlim(0,20)
+    for idx, v in enumerate(plot_role_skills['perc_mentions_byrole']):
+        ax[i].text(v + 0.5, idx, f'{v:.0f}%', va='center')
+    plt.tight_layout(h_pad=.8)
+    # Only displays axis ticks for the last subplot
+    if i != len(top_data_roles) - 1:
+        ax[i].set_xticks([])
+```
+
+### Results & Takeaways
+
+![Most Prevalent Skills for the Top 3 Chicagoland Data Roles](images/top3roles_skills.png) *Bar Graphs representing the top 5 skills for the top data roles by post mentions*
+
+It's clear that my analysis should hone in on Data Analyst, Data Scientist, and Data Engineer roles, as they make up the majority of the Chicagoland dataset. Furthermore, it appears that SQL and Python cut across all top data roles and rank highly as demanded skills, so my upskilling should focus on these two skills (I'm off to a good start!). 
+
+## Part 2: Tracking in-demand Data Analyst skills over time
+
+Because I work as a Data Analyst, I want to see how top skills for the role are trending over time in the Chicagoland area. For this investigation, I used a line plot with months on the x-axis; this allowed me to see the prevalence of job post mentions over time.
+
+```python
+# How do Top Data Analyst Skills Trend Over the Year? 
+chicago_analyst_subset = chicago_roles_data[chicago_roles_data['job_title_short'] == 'Data Analyst'].copy()
+chicago_analyst_subset['posted_month'] = chicago_analyst_subset['job_posted_date'].dt.month
+
+chicago_analyst_skills = chicago_analyst_subset.explode('job_skills')
+chicago_analyst_monthly_skills = chicago_analyst_skills.pivot_table(index='posted_month', columns='job_skills',aggfunc='size', fill_value=0)
+
+# Identify top skills across all months and sort columns accordingly
+chicago_analyst_monthly_skills.loc['Total'] = chicago_analyst_monthly_skills.sum()
+chicago_analyst_monthly_skills = chicago_analyst_monthly_skills[chicago_analyst_monthly_skills.loc['Total'].sort_values(ascending=False).index]
+chicago_analyst_monthly_skills = chicago_analyst_monthly_skills.drop('Total')
+
+# Calculate Monthly Skill Mentions compared to Monthly Total
+chicago_analyst_monthly_skill_percents = chicago_analyst_monthly_skills.div(
+    chicago_analyst_monthly_skills.sum(axis=1), axis=0
+) * 100
+
+# Convert Months to Month Names
+chicago_analyst_monthly_skill_percents = chicago_analyst_monthly_skill_percents.reset_index()
+chicago_analyst_monthly_skill_percents['month_name'] = chicago_analyst_monthly_skill_percents['posted_month'].apply(lambda x: pd.to_datetime(x, format='%m').strftime('%b'))
+chicago_analyst_monthly_skill_percents = chicago_analyst_monthly_skill_percents.set_index('month_name')
+chicago_analyst_monthly_skill_percents = chicago_analyst_monthly_skill_percents.drop(columns='posted_month')
+
+# Visualize the Top 5 Skill Trends over Months
+chicago_skills_plot = chicago_analyst_monthly_skill_percents.iloc[:,0:5]
+sns.lineplot(chicago_skills_plot, legend=False, palette='tab10', dashes=False)
+
+sns.set_theme(style='ticks')
+sns.despine()
+
+plt.title('Chicagoland Data Analyst Top Skill Trends')
+plt.xlabel('2023')
+plt.ylabel('Mentions out of Monthly Skill Mentions')
+plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+for i in range(5):
+    plt.text(11.2, chicago_skills_plot.iloc[-1, i], chicago_skills_plot.columns[i], color='black')
+```
