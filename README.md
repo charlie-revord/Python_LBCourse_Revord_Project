@@ -151,8 +151,7 @@ for i in range(5):
 
 ### Results & Takeaways
 ![Top Data Analyst Skills Trend over Time](images/analyst_skills_trend.png) 
-
-*Line Graph representing the top 5 in-demand Data Analyst skills over time*
+*Top 5 in-demand Data Analyst skills over time*
 
 Month by month, two skills remain king for Data Analysts looking for work in the Chicagoland area: SQL and Excel. Programming and special technologies are secondary to essential query skills.
 
