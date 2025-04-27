@@ -231,4 +231,32 @@ plt.show()
 ### Results & Takeaways
 
 ![Scatterplot of Chicago Data Analyst Skill Post Mentions vs. Median Salary](images/analyst_skills_pay_bydemand.png)  
-*Scatterplot showing the relationship between proportion of skill post mentions and the skill's median salary*
+*Scatterplot showing the relationship between the proportion of Chicago Data Analyst skill post mentions and the skill's median salary*
+
+The scatterplot hammers home that if there is one skill I should master as I define myself as a Chicagoland Data Analyst, it is SQL. SQL has a high proportion of mentions in paid analyst job posts. While some skills have higher median salary figures, I should put an emphasis on core skills which balance high demand with solid pay. Those skills are: SQL, Python, Excel, with a secondary emphasis on BI tools like Tableau.
+
+# 🔚 Conclusion
+
+## ✏️ What I Learned
+
+* **General Python Abilities:** Luke's course lessons on the ins and outs of Python were extremely helpful. I especially liked practicing the various loops and data structures Python offers.
+* **Python Visualization:** As a seasoned Tableau user with a background in programmatic visualizations using R, I struggled with some of the matplotlib syntax. Though I may not use Matplotlib in my day job, it helps to learn a different approach to making charts.
+* **Dissemination Ready Writeups:** Once again, I am reminded how elegant and aesthetically pleasing Markdown syntax is for writing up data reports. I plan on utilizing this approach in my next role, where I am able. 
+
+## ⛰️ Challenges Faced
+
+The biggest hurdle for me was getting a grip on Matplotlib syntax. To be honest, I don't really like the syntax, but I still have an appreciation for the fine control the library affords. 
+
+Another big challenge was dealing with nested methods and data structures. A misplaced bracket can make an analysis come to a quick halt. Thankfully, robust documentation and ChatGPT come to the rescue in these moments.
+
+## 💡 Insights
+
+My analysis of Chicagoland data role job postings from 2023 highlighted a few things:
+
+1. Data Analyst, Data Engineer, and Data Scientist roles are all viable in the Chicagoland area. I feel vindicated, as a Data Analyst, that Data Analyst roles received the most job posts regionally. 
+2. Core Data Analyst skills, like SQL, Python, and Excel, are most in-demand regionally, and provide solid compensation. Niche technologies may pay more, but their demand is relatively limited. I'll stick with upskilling in the core skills. 
+3. Though there is some variation in the demand for the top Chicago Data Analyst skills by job posted month, the leading skills maintain a healthy lead month by month. In short: core skills aren't a fad and are safe to pursue.
+4. AI technologies didn't factor into the analysis, mainly because the analysis covers 2023 data before the LLM boom. A follow-up analysis of the regional impact AI has had on Chicago data role job postings might be helpful.
+
+On a personal level, I enjoyed the challenge of performing an analysis with new tools and workflows. Being able to compare and contrast approaches strengthens my professional understanding of the field.  
+
