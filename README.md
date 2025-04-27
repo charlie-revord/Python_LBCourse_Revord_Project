@@ -14,6 +14,12 @@ Sample fields from the dataset include:
 * Desired Skills
 * And more!
 
+⚙️ **TOOLS USED**:
+
+* **Python:** Programming language used to write the project data analyses 
+* **Jupyter Notebooks:** The code in the repository is stored in a Jupyter Notebook, which is easy to read because code is separated into relevant sections.
+* **Github:** Hosts the publicly accessible repository for this project and enabled version control during production.
+
 # 🏙️ Defining the Analysis
 
 To tailor the analysis project to my interests, I have decided to analyze all Chicagoland area jobs referenced in the dataset. Though I recently accepted a full-time analyst role, I would like to know what skills are sought by employers as I plan future upskilling sessions. 
@@ -143,10 +149,80 @@ for i in range(5):
 ```
 
 ### Results & Takeaways
-![Top Data Analyst Skills Trend over Time](images/analyst_skills_trend.png)
+![Top Data Analyst Skills Trend over Time](images/analyst_skills_trend.png) *Line Graph representing the top 5 in-demand Data Analyst skills over time.*
 
 Month by month, two skills remain king for Data Analysts looking for work in the Chicagoland area: SQL and Excel. Programming and special technologies are secondary to essential query skills.
 
 ## Part 3: Making Sense of Salary Information
 
-A caveat of my analysis is that I am working with a subset of Luke's webscraped data. As a result, I expect limited salary information at a regional level. That said, I want to make use of this data (with a few grains of salt)
+A caveat of my analysis is that I am working with a small subset of Luke's webscraped data. As a result, I expect limited salary information at a regional level. That said, I want to make use of this data (with a few grains of salt) to better understand the regional pay differences between data roles.
+
+‼️ NOTE: My initial exploratory analysis of Chicago data roles with salaries showed that approximately 6% of Chicago job postings had salary information. Filtering for the Top 3 Data Roles [Data Analyst, Data Engineer, Data Scientist], that number decreases to ~4.5% of the total dataset. When viewing the results below, please consider this nuance.
+
+While the Chicagoland job post subset does not have tons of salary information, I chose to use boxplots to assess the spread of salaries reported for the Top 3 Roles. 
+
+```python
+# Plot the average salary distributions for the Top 3 Chicagoland Data Roles
+sns.boxplot(top_chicago_roles_salaries, x='salary_year_avg', y='job_title_short')
+sns.set_theme(style='ticks')
+sns.despine()
+
+plt.title('Salary Distributions for the Top 3 Chicagoland Data Roles')
+plt.ylabel('')
+plt.xlabel('Average Salary ($USD)')
+ticks_x = plt.FuncFormatter(lambda x, pos: f'${int(x/1000)}K')
+plt.gca().xaxis.set_major_formatter(ticks_x)
+
+plt.tight_layout()
+plt.show()
+```
+### Results & Takeaways
+
+![Salary Boxplots for the Top 3 Chicago Data Roles](images/toproles_salarydist.png) *Boxplots representing the top salary distributions for the top Chicago data roles*
+
+As a Data Analyst by trade, I feel secure knowing that, in combination with the role name taking the lead as the most in-demand data role in Chicago, the distribution of salaries for the role type is tighter than it is for Data Engineers and Scientists. Yes, the median salary lags behind Engineers and Scientists, but the compensation is more than adequate, especially in the Midwest where the cost of living is cheaper than the East and West coast. With this in mind, I will elect to hone in on Data Analyst pay analyses more closely in the next section.
+
+## Part 4: Identifying Skills that Balance Demand and Solid Pay
+
+The final part of this analysis is split into two parts: 
+
+1. Identifying the Top Skills by Post Mentions (for salaried jobs)
+2. Identifying the Skills which Balance Demand vs. Median Salary (for upskilling optimization)
+
+_130_ Data Analyst job posts in the dataset have salary information. I would have liked more data to work with, but the sample is enough to calculate some skill trends by pay.
+
+I broke up this first part of the analysis into two horizontal bar charts which enable easy comparison between Top Paying Skills (which may not have high demand) vs. Top Demanded Skills.
+
+![Top Demanded Skills and Top Paid Skills for Chicago Data Analyst Salaried Positions](images/analyst_paidskills.png)
+
+The results show that niche technologies are compensated well. For me, this doesn't seem like much of a surprise - the more niche a technology is, the more specialized it likely is. What should be noted, however, is that these technologies had very small post mentions, with often just one to three jobs mentioning these skills.
+
+On the flip side, high demand skills for Chicago Data Analysts, which may not break into six figures as often as niche technologies, still net respectable earnings. As I upskill, I am going to put my focus in the high-demand technologies.
+
+The final visual of this analysis, which is a scatter plot of the proportion of post mentions vs. median salary by skill, will help me decide where I should put my efforts.
+
+```python
+# Plot the relationship between the top demanded skills and their median pay
+
+sns.scatterplot(chicago_analyst_topdemand_skills, x= 'perc_of_paidjobs', y= 'median', legend=False)
+plt.title('Most In-Demand Skills Against Median Pay for Chicago Analyst Roles')
+ax = plt.gca()
+ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: f'${int(y/1000)}K'))
+ax.set_xlabel('Percent of Paid Analyst Roles with Skill Mentioned')
+ax.set_ylabel('Median Salary ($USD)')
+ax.set_xlim(0, 70)
+
+texts = []
+for i, txt in enumerate(chicago_analyst_topdemand_skills.index):
+    texts.append(plt.text(chicago_analyst_topdemand_skills['perc_of_paidjobs'].iloc[i], chicago_analyst_topdemand_skills['median'].iloc[i], " " + txt))
+
+# Adjust text to avoid overlap and add arrows
+adjust_text(texts, arrowprops=dict(arrowstyle='->', color='gray'))
+
+plt.tight_layout()
+plt.show()
+```
+
+### Results & Takeaways
+
+![Scatterplot of Chicago Data Analyst Skill Post Mentions vs. Median Salary](images/analyst_skills_pay_bydemand.png)
