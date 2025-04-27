@@ -151,6 +151,7 @@ for i in range(5):
 
 ### Results & Takeaways
 ![Top Data Analyst Skills Trend over Time](images/analyst_skills_trend.png) 
+
 *Line Graph representing the top 5 in-demand Data Analyst skills over time*
 
 Month by month, two skills remain king for Data Analysts looking for work in the Chicagoland area: SQL and Excel. Programming and special technologies are secondary to essential query skills.
@@ -181,6 +182,7 @@ plt.show()
 ### Results & Takeaways
 
 ![Salary Boxplots for the Top 3 Chicago Data Roles](images/toproles_salarydist.png)
+
 *Boxplots representing the top salary distributions for the top Chicago data roles*
 
 As a Data Analyst by trade, I feel secure knowing that, in combination with the role name taking the lead as the most in-demand data role in Chicago, the distribution of salaries for the role type is tighter than it is for Data Engineers and Scientists. Yes, the median salary lags behind Engineers and Scientists, but the compensation is more than adequate, especially in the Midwest where the cost of living is cheaper than the East and West coast. With this in mind, I will elect to hone in on Data Analyst pay analyses more closely in the next section.
@@ -197,6 +199,7 @@ _130_ Data Analyst job posts in the dataset have salary information. I would hav
 I broke up this first part of the analysis into two horizontal bar charts which enable easy comparison between Top Paying Skills (which may not have high demand) vs. Top Demanded Skills.
 
 ![Top Demanded Skills and Top Paid Skills for Chicago Data Analyst Salaried Positions](images/analyst_paidskills.png)
+
 *Bar Charts for Highest Paid Chicago Data Analyst Skills vs. Highest Demand Chicago Data Analyst Skills*
 
 The results show that niche technologies are compensated well. For me, this doesn't seem like much of a surprise - the more niche a technology is, the more specialized it likely is. What should be noted, however, is that these technologies had very small post mentions, with often just one to three jobs mentioning these skills.
@@ -230,4 +233,5 @@ plt.show()
 ### Results & Takeaways
 
 ![Scatterplot of Chicago Data Analyst Skill Post Mentions vs. Median Salary](images/analyst_skills_pay_bydemand.png)
+
 *Scatterplot showing the relationship between proportion of skill post mentions and the skill's median salary*
