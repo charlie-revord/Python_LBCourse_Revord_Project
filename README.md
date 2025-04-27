@@ -123,8 +123,8 @@ for i, value in enumerate(top_data_roles):
 
 ### Results & Takeaways
 
-![Most Prevalent Skills for the Top 3 Chicagoland Data Roles](images/top3roles_skills.png)
-*Bar Graphs representing the top 5 skills for the top data roles by post mentions*
+![Most Prevalent Skills for the Top 3 Chicagoland Data Roles](images/top3roles_skills.png)  
+*Top 5 skills for the top data roles by post mentions*
 
 It's clear that my analysis should hone in on Data Analyst, Data Scientist, and Data Engineer roles, as they make up the majority of the Chicagoland dataset. Furthermore, it appears that SQL and Python cut across all top data roles and rank highly as demanded skills, so my upskilling should focus on these two skills (I'm off to a good start!). 
 
@@ -180,8 +180,7 @@ plt.show()
 ```
 ### Results & Takeaways
 
-![Salary Boxplots for the Top 3 Chicago Data Roles](images/toproles_salarydist.png)
-
+![Salary Boxplots for the Top 3 Chicago Data Roles](images/toproles_salarydist.png)  
 *Boxplots representing the top salary distributions for the top Chicago data roles*
 
 As a Data Analyst by trade, I feel secure knowing that, in combination with the role name taking the lead as the most in-demand data role in Chicago, the distribution of salaries for the role type is tighter than it is for Data Engineers and Scientists. Yes, the median salary lags behind Engineers and Scientists, but the compensation is more than adequate, especially in the Midwest where the cost of living is cheaper than the East and West coast. With this in mind, I will elect to hone in on Data Analyst pay analyses more closely in the next section.
@@ -231,6 +230,5 @@ plt.show()
 
 ### Results & Takeaways
 
-![Scatterplot of Chicago Data Analyst Skill Post Mentions vs. Median Salary](images/analyst_skills_pay_bydemand.png)
-
+![Scatterplot of Chicago Data Analyst Skill Post Mentions vs. Median Salary](images/analyst_skills_pay_bydemand.png)  
 *Scatterplot showing the relationship between proportion of skill post mentions and the skill's median salary*
